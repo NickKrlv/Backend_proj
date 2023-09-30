@@ -21,9 +21,7 @@ def get_executed_operations(data):
 
 def get_last_sorted_operations(data):
     """Получает список операций и сортирует его по дате."""
-    print(data)
     data = sorted(data, key=lambda x: datetime.strptime(x["date"], '%Y-%m-%dT%H:%M:%S.%f'), reverse=True)
-    print(data)
     return data[0:5]
 # get_last_sorted_operations(get_executed_operations(get_data()))
 
