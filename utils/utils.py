@@ -9,23 +9,23 @@ def get_data(path=os.path.join("..", "data", "operations.json")):
     """
     with open(path, "r", encoding="utf-8") as file:
         data = json.load(file)
+
     return data
 
 
-def last_operations():
-    """
-    Получает последние 5 выполненных операций из данных.
+def get_executed_operations(data):
+    """Получает список операций и оставляет только выполненные."""
+    data = [operation for operation in data if "state" in operation and operation["state"] == "EXECUTED"]
+    return data
 
-    Возвращает cписок, содержащий последние 5 выполненных операций.
-    """
-    data = get_data()
-    executed_operations = []
-    for operation in data:
-        if "state" in operation and operation["state"] == "EXECUTED":
-            executed_operations.append(operation)
-    # print(*executed_operations[-1:-6:-1], sep="\n")
-    return executed_operations[-1:-6:-1]
 
+def get_last_sorted_operations(data):
+    """Получает список операций и сортирует его по дате."""
+    print(data)
+    data = sorted(data, key=lambda x: datetime.strptime(x["date"], '%Y-%m-%dT%H:%M:%S.%f'), reverse=True)
+    print(data)
+    return data[0:5]
+# get_last_sorted_operations(get_executed_operations(get_data()))
 
 def format_operation(operation, destination=''):
     """
@@ -36,8 +36,7 @@ def format_operation(operation, destination=''):
     formatted_date = datetime.strptime(operation['date'], '%Y-%m-%dT%H:%M:%S.%f').strftime('%d.%m.%Y')
 
     if operation['description'] == 'Перевод с карты на счет':
-        #Здесь столкнулся с проблемой, что карты были разных банковских систем.
-        #Пришлось распаковывать данные и запаковывать обратно
+
         source = operation.get('from', '').split(' ')
         *source_names, deposit = source
         source_names_str = ' '.join(source_names)
