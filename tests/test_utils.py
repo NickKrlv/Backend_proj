@@ -84,6 +84,7 @@ def test_format_operation(data_for_test):
     data = data_for_test[0]
     assert format_operation(data) == "30.06.2018 Перевод организации\nСчет **6952 -> Счет **6702\n9824.07 USD"
 
+
 def test_format_operation_internal_transfer():
     operation = {
         'date': '2022-01-01T12:00:00.000000',
@@ -101,6 +102,7 @@ def test_format_operation_internal_transfer():
         '01.01.2022 Перевод со счета на счет\nСчет **3456 -> Счет **7654\n200 USD'
     )
     assert format_operation(operation) == expected_result
+
 
 def test_get_executed_operations_empty():
     assert len(get_executed_operations([])) == 0
